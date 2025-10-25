@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Clayora - Ecommerce</title>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Clayora</div>
+
+        <ul class="menu" id="menu">
+            <li><a href="#home">Home </a></li>
+            <li><a href="#shop">Shop </i></a></li>
+            <li><a href="#blog">Blog </i></a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="icons">
+            <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+            <i class="fa-regular fa-user" id="loginIcon"></i>
+            <i class="fa-regular fa-heart"></i>
+            <div class="cart" id="cartIcon">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="badge" id="cartBadge">0</span>
+            </div>
+            <i class="fa-solid fa-bars hamburger" id="menu-icon"></i>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-text" id="hero-text">
+            <h1 id="product-title">Welcome to Clayora</h1>
+            <p id="product-description">Discover amazing products at unbeatable prices. Shop the latest trends with
+                exclusive discounts and premium quality items.</p>
+            <button class="shop-btn">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="hero-img" id="hero-img">
+            <img id="product-image" src="" alt="Featured Product" />
+        </div>
+
+        <div class="slider-buttons">
+            <button id="prev-btn">← Prev</button>
+            <button id="next-btn">Next →</button>
+        </div>
+    </section>
+
+
+
+
+    <!-- Products Section -->
+    <section class="products-section" id="shop">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="container">
+            <div class="products-grid" id="productList">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Details Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductTitle">Product Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="" class="img-fluid rounded" id="modalProductImage" alt="Product Image">
+                        </div>
+                        <div class="col-md-6">
+                            <h4 id="modalProductName"></h4>
+                            <p class="price mb-3" id="modalProductPrice"></p>
+                            <p id="modalProductDescription"></p>
+                            <div class="mt-4">
+                                <button class="btn btn-primary" id="modalAddToCart">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- NEW: Sign In/Sign Up Modal -->
+    <div class="modal fade auth-modal" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Tabs -->
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" data-tab="login">Sign In</button>
+                        <button class="auth-tab" data-tab="signup">Sign Up</button>
+                    </div>
+
+                    <!-- Messages -->
+                    <div class="form-message" id="formMessage"></div>
+
+                    <!-- Sign In Form -->
+                    <form class="auth-form active" id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label" for="loginEmail">Email Address</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="loginPassword">Password</label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="loginPassword"
+                                    placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" data-target="loginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="rememberMe">
+                                <label for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-auth" id="loginBtn">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+
+                        <div class="form-footer">
+                            Don't have an account? <a href="#" class="switch-to-signup">Sign up</a>
+                        </div>
+                    </form>
+
+                    <!-- Sign Up Form -->
+                    <form class="auth-form" id="signupForm">
+                        <div class="form-group">
+                            <label class="form-label" for="signupName">Full Name</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Enter your full name"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signupEmail">Email Address</label>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signupPassword">Password</label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="signupPassword"
+                                    placeholder="Create a password" required>
+                                <button type="button" class="toggle-password" data-target="signupPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="signupConfirmPassword"
+                                    placeholder="Confirm your password" required>
+                                <button type="button" class="toggle-password" data-target="signupConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-auth" id="signupBtn">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+
+                        <div class="form-footer">
+                            Already have an account? <a href="#" class="switch-to-login">Sign in</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Loader -->
+    <div id="simpleLoader" class="simple-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+        <button type="button" class="btn btn-success" id="simpleCheckout">
+            <i class="fas fa-bolt"></i> Quick Checkout
+        </button>
+    </div>
+
+    <footer class="footer" id="about">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Company Info -->
+                <div class="footer-column">
+                    <h3>Clayora</h3>
+                    <p>Your trusted partner for quality products and exceptional service. We're committed to bringing
+                        you the best shopping experience.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Shop</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Service -->
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Help Center</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Returns</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Shipping Info</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Size Guide</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get updates on new products and special offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                    <div class="payment-methods">
+                        <span>We Accept:</span>
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                        <i class="fab fa-cc-apple-pay"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <div class="copyright">
+                        &copy; 2025 Clayora. All rights reserved.
+                    </div>
+                    <ul class="footer-links-bottom">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>

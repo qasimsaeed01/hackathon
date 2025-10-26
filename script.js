@@ -1,4 +1,3 @@
-
 // Navigation Menu
 const menuIcon = document.getElementById('menu-icon');
 const menu = document.getElementById('menu');
@@ -11,7 +10,7 @@ menuIcon.addEventListener('click', () => {
     menuIcon.classList.toggle('fa-xmark');
 });
 
-// NEW: Login Icon Click
+// Login Icon Click
 loginIcon.addEventListener('click', () => {
     const authModal = new bootstrap.Modal(document.getElementById('authModal'));
     authModal.show();
@@ -112,19 +111,19 @@ function displayProductCards() {
         const productCard = document.createElement('div');
         productCard.className = 'card-wrapper';
         productCard.innerHTML = `
-                    <div class="card">
-                        <img src="${product.image}" class="card-img-top" alt="${product.title}">
-                        <div class="card-body">
-                            <h5 class="card-title">${product.title}</h5>
-                            <p class="card-text">${product.description.substring(0, 80)}...</p>
-                            <p class="price">$${product.price}</p>
-                            <div class="card-buttons">
-                                <button class="btn btn-outline-primary view-details" data-id="${product.id}">Details</button>
-                                <button class="btn btn-primary add-to-cart" data-id="${product.id}">Add to Cart</button>
-                            </div>
-                        </div>
+            <div class="card">
+                <img src="${product.image}" class="card-img-top" alt="${product.title}">
+                <div class="card-body">
+                    <h5 class="card-title">${product.title}</h5>
+                    <p class="card-text">${product.description.substring(0, 80)}...</p>
+                    <p class="price">$${product.price}</p>
+                    <div class="card-buttons">
+                        <button class="btn btn-outline-primary view-details" data-id="${product.id}">Details</button>
+                        <button class="btn btn-primary add-to-cart" data-id="${product.id}">Add to Cart</button>
                     </div>
-                `;
+                </div>
+            </div>
+        `;
         productList.appendChild(productCard);
     });
 
@@ -176,13 +175,10 @@ function updateCartBadge() {
 function updateCartModal() {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
-    const checkoutBtn = document.getElementById('checkoutBtn');
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<p class="text-center">Your cart is empty</p>';
         cartTotal.textContent = '0.00';
-        checkoutBtn.disabled = true;
-        checkoutBtn.textContent = 'Proceed to Checkout';
         return;
     }
 
@@ -193,27 +189,26 @@ function updateCartModal() {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
         itemsHTML += `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.title}">
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.title}</div>
-                            <div class="cart-item-price">$${item.price}</div>
-                            <div class="quantity-controls">
-                                <button class="quantity-btn decrease-quantity" data-index="${index}">-</button>
-                                <span class="quantity">${item.quantity}</span>
-                                <button class="quantity-btn increase-quantity" data-index="${index}">+</button>
-                            </div>
-                        </div>
-                        <button class="delete-btn remove-item" data-index="${index}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">${item.title}</div>
+                    <div class="cart-item-price">$${item.price}</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn decrease-quantity" data-index="${index}">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn increase-quantity" data-index="${index}">+</button>
                     </div>
-                `;
+                </div>
+                <button class="delete-btn remove-item" data-index="${index}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
     });
 
     cartItems.innerHTML = itemsHTML;
     cartTotal.textContent = total.toFixed(2);
-    checkoutBtn.disabled = false;
 
     // Add event listeners for cart controls
     document.querySelectorAll('.increase-quantity').forEach(button => {
@@ -281,30 +276,126 @@ function showProductDetails(event) {
     }
 }
 
-// NEW: Checkout Functionality
-document.getElementById('checkoutBtn').addEventListener('click', function () {
+// Checkout Functionality
+document.getElementById('simpleCheckout').addEventListener('click', function() {
     if (cart.length === 0) {
         alert('Your cart is empty!');
         return;
     }
+    
+    updateCheckoutModal();
+    const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+    checkoutModal.show();
+    
+    // Close cart modal
+    const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+    cartModal.hide();
+});
 
-    // Simulate checkout process
-    this.textContent = 'Processing...';
-    this.disabled = true;
+// Update checkout modal
+function updateCheckoutModal() {
+    const checkoutItems = document.getElementById('checkoutItems');
+    const orderTotal = document.getElementById('orderTotal');
+    
+    let itemsHTML = '';
+    let subtotal = 0;
+    
+    cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        itemsHTML += `
+            <div class="order-item-checkout">
+                <span>${item.title.substring(0, 30)}... (x${item.quantity})</span>
+                <span>$${itemTotal.toFixed(2)}</span>
+            </div>
+        `;
+    });
+    
+    // Add shipping and tax
+    const shipping = 5.00;
+    const tax = subtotal * 0.1;
+    const total = subtotal + shipping + tax;
+    
+    itemsHTML += `
+        <div class="order-item-checkout">
+            <span>Shipping</span>
+            <span>$${shipping.toFixed(2)}</span>
+        </div>
+        <div class="order-item-checkout">
+            <span>Tax</span>
+            <span>$${tax.toFixed(2)}</span>
+        </div>
+    `;
+    
+    checkoutItems.innerHTML = itemsHTML;
+    orderTotal.textContent = total.toFixed(2);
+}
 
+// Payment method toggle
+document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const cardDetails = document.getElementById('cardDetails');
+        if (this.value === 'card') {
+            cardDetails.style.display = 'block';
+        } else {
+            cardDetails.style.display = 'none';
+        }
+    });
+});
+
+// Place order functionality
+document.getElementById('placeOrderBtn').addEventListener('click', function() {
+    const form = document.getElementById('checkoutForm');
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    // Validate required fields
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.style.borderColor = 'red';
+            isValid = false;
+        } else {
+            field.style.borderColor = '';
+        }
+    });
+    
+    if (!isValid) {
+        alert('Please fill all required fields');
+        return;
+    }
+    
+    const btn = this;
+    const originalText = btn.innerHTML;
+    
+    // Show processing
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    btn.disabled = true;
+    
     setTimeout(() => {
-        alert('Checkout successful! Your order has been placed.');
+        // Show success modal
+        const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
+        const checkoutModal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+        
+        // Clear cart
         cart = [];
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartBadge();
-        updateCartModal();
-
-        const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
-        cartModal.hide();
+        
+        // Close checkout modal and show success
+        checkoutModal.hide();
+        successModal.show();
+        
+        // Reset form
+        form.reset();
+        document.getElementById('cardDetails').style.display = 'none';
+        
+        // Reset button
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     }, 2000);
 });
 
-// NEW: Sign In/Sign Up Functionality
+// Sign In/Sign Up Functionality
 const authTabs = document.querySelectorAll('.auth-tab');
 const authForms = document.querySelectorAll('.auth-form');
 
@@ -401,6 +492,7 @@ document.getElementById('signupForm').addEventListener('submit', function (e) {
     }, 1000);
 });
 
+// Product Slider Controls
 nextBtn.addEventListener("click", () => {
     if (!products.length || isTransitioning) return;
     index = (index + 1) % products.length;
@@ -441,48 +533,11 @@ function hideLoader() {
 document.addEventListener('DOMContentLoaded', function() {
     showLoader();
     
-    // Hide loader after 2 seconds (or when your content is loaded)
+    // Hide loader after 2 seconds
     setTimeout(function() {
         hideLoader();
     }, 1000);
 });
-
-
-
-// Simple checkout - direct implementation
-document.getElementById('simpleCheckout').addEventListener('click', function() {
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-    }
-    
-    const btn = this;
-    const originalText = btn.innerHTML;
-    
-    // Show processing
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    btn.disabled = true;
-    
-    setTimeout(() => {
-        alert('Order placed successfully! Thank you for your purchase.');
-        
-        // Clear cart
-        cart = [];
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartBadge();
-        updateCartModal();
-        
-        // Close modal
-        const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
-        cartModal.hide();
-        
-        // Reset button
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }, 1500);
-});
-
-
 
 // Initialize
 fetchProducts();

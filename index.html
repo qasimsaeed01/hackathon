@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,16 +9,21 @@
     <link rel="stylesheet" href="./style.css">
     <title>Clayora - Ecommerce</title>
 </head>
-
 <body>
+    <!-- Loader -->
+    <div id="simpleLoader" class="simple-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
 
     <nav>
         <div class="logo">Clayora</div>
-
         <ul class="menu" id="menu">
-            <li><a href="#home">Home </a></li>
-            <li><a href="#shop">Shop </i></a></li>
-            <li><a href="#blog">Blog </i></a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#blog">Blog</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -38,22 +42,17 @@
     <section class="hero" id="home">
         <div class="hero-text" id="hero-text">
             <h1 id="product-title">Welcome to Clayora</h1>
-            <p id="product-description">Discover amazing products at unbeatable prices. Shop the latest trends with
-                exclusive discounts and premium quality items.</p>
+            <p id="product-description">Discover amazing products at unbeatable prices. Shop the latest trends with exclusive discounts and premium quality items.</p>
             <button class="shop-btn">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div class="hero-img" id="hero-img">
             <img id="product-image" src="" alt="Featured Product" />
         </div>
-
         <div class="slider-buttons">
             <button id="prev-btn">← Prev</button>
             <button id="next-btn">Next →</button>
         </div>
     </section>
-
-
-
 
     <!-- Products Section -->
     <section class="products-section" id="shop">
@@ -92,9 +91,159 @@
         </div>
     </div>
 
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartItems">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    <div class="cart-total">
+                        Total: $<span id="cartTotal">0.00</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+                    <button type="button" class="btn btn-success" id="simpleCheckout">
+                        <i class="fas fa-bolt"></i> Quick Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Shipping Address</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phone *</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address *</label>
+                                    <input type="text" class="form-control" id="address" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">City *</label>
+                                        <input type="text" class="form-control" id="city" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Postal Code *</label>
+                                        <input type="text" class="form-control" id="postalCode" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country *</label>
+                                    <select class="form-control" id="country" required>
+                                        <option value="">Select Country</option>
+                                        <option value="US">United States</option>
+                                        <option value="IN">India</option>
+                                        <option value="UK">United Kingdom</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Payment Method</h6>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod" checked>
+                                        <label class="form-check-label" for="cod">
+                                            Cash on Delivery
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="card" value="card">
+                                        <label class="form-check-label" for="card">
+                                            Credit/Debit Card
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div id="cardDetails" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Card Number</label>
+                                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Expiry Date</label>
+                                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">CVV</label>
+                                            <input type="text" class="form-control" id="cvv" placeholder="123">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Cardholder Name</label>
+                                        <input type="text" class="form-control" id="cardholderName">
+                                    </div>
+                                </div>
+                                
+                                <div class="order-summary">
+                                    <h6>Order Summary</h6>
+                                    <div id="checkoutItems">
+                                        <!-- Order items will be loaded here -->
+                                    </div>
+                                    <div class="order-total">
+                                        <strong>Total: $<span id="orderTotal">0.00</span></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="placeOrderBtn">
+                        <i class="fas fa-shopping-bag"></i> Place Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- NEW: Sign In/Sign Up Modal -->
+    <!-- Order Success Modal -->
+    <div class="modal fade" id="orderSuccessModal" tabindex="-1">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="success-icon mb-3">
+                        <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5>Order Placed Successfully!</h5>
+                    <p class="text-muted">Thank you for your purchase</p>
+                    <button class="btn btn-primary mt-2" data-bs-dismiss="modal">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign In/Sign Up Modal -->
     <div class="modal fade auth-modal" id="authModal" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
@@ -102,34 +251,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Tabs -->
                     <div class="auth-tabs">
                         <button class="auth-tab active" data-tab="login">Sign In</button>
                         <button class="auth-tab" data-tab="signup">Sign Up</button>
                     </div>
-
-                    <!-- Messages -->
                     <div class="form-message" id="formMessage"></div>
-
-                    <!-- Sign In Form -->
                     <form class="auth-form active" id="loginForm">
                         <div class="form-group">
                             <label class="form-label" for="loginEmail">Email Address</label>
-                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email"
-                                required>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label" for="loginPassword">Password</label>
                             <div class="password-input">
-                                <input type="password" class="form-control" id="loginPassword"
-                                    placeholder="Enter your password" required>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
                                 <button type="button" class="toggle-password" data-target="loginPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-
                         <div class="form-options">
                             <div class="remember-me">
                                 <input type="checkbox" id="rememberMe">
@@ -137,56 +277,43 @@
                             </div>
                             <a href="#" class="forgot-password">Forgot Password?</a>
                         </div>
-
                         <button type="submit" class="btn-auth" id="loginBtn">
                             <i class="fas fa-sign-in-alt me-2"></i>Sign In
                         </button>
-
                         <div class="form-footer">
                             Don't have an account? <a href="#" class="switch-to-signup">Sign up</a>
                         </div>
                     </form>
-
-                    <!-- Sign Up Form -->
                     <form class="auth-form" id="signupForm">
                         <div class="form-group">
                             <label class="form-label" for="signupName">Full Name</label>
-                            <input type="text" class="form-control" id="signupName" placeholder="Enter your full name"
-                                required>
+                            <input type="text" class="form-control" id="signupName" placeholder="Enter your full name" required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label" for="signupEmail">Email Address</label>
-                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email"
-                                required>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email" required>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label" for="signupPassword">Password</label>
                             <div class="password-input">
-                                <input type="password" class="form-control" id="signupPassword"
-                                    placeholder="Create a password" required>
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Create a password" required>
                                 <button type="button" class="toggle-password" data-target="signupPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
                             <div class="password-input">
-                                <input type="password" class="form-control" id="signupConfirmPassword"
-                                    placeholder="Confirm your password" required>
+                                <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm your password" required>
                                 <button type="button" class="toggle-password" data-target="signupConfirmPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-
                         <button type="submit" class="btn-auth" id="signupBtn">
                             <i class="fas fa-user-plus me-2"></i>Create Account
                         </button>
-
                         <div class="form-footer">
                             Already have an account? <a href="#" class="switch-to-login">Sign in</a>
                         </div>
@@ -196,29 +323,12 @@
         </div>
     </div>
 
-    <!-- Simple Loader -->
-    <!-- <div id="simpleLoader" class="simple-loader">
-        <div class="loader-content">
-            <div class="loader-spinner"></div>
-            <p>Loading...</p>
-        </div>
-    </div> -->
-
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
-        <button type="button" class="btn btn-success" id="simpleCheckout">
-            <i class="fas fa-bolt"></i> Quick Checkout
-        </button>
-    </div>
-
     <footer class="footer" id="about">
-        <div class="footer-container">
+        <div class="footer-container" id="contact">
             <div class="footer-content">
-                <!-- Company Info -->
                 <div class="footer-column">
                     <h3>Clayora</h3>
-                    <p>Your trusted partner for quality products and exceptional service. We're committed to bringing
-                        you the best shopping experience.</p>
+                    <p>Your trusted partner for quality products and exceptional service. We're committed to bringing you the best shopping experience.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -227,8 +337,6 @@
                         <a href="#"><i class="fab fa-pinterest"></i></a>
                     </div>
                 </div>
-
-                <!-- Quick Links -->
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
@@ -239,8 +347,6 @@
                         <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
                     </ul>
                 </div>
-
-                <!-- Customer Service -->
                 <div class="footer-column">
                     <h3>Customer Service</h3>
                     <ul class="footer-links">
@@ -251,8 +357,6 @@
                         <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
                     </ul>
                 </div>
-
-                <!-- Newsletter -->
                 <div class="footer-column">
                     <h3>Newsletter</h3>
                     <p>Subscribe to get updates on new products and special offers.</p>
@@ -269,8 +373,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <div class="copyright">
@@ -286,8 +388,8 @@
             </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./script.js"></script>
 </body>
-
 </html>
